@@ -6,10 +6,10 @@ function setup() {
 
 function draw() {
   background(200);
-  system = new GSystem(balls, 1);
+  system = new GSystem(balls);
   
-  if (keyIsDown(71) === true){
-    system.changeVelocity();
+  if(keyIsPressed && keyCode >= 49 && keyCode <= 57){
+    system.changeVelocity(keyCode - 48)
   }
   
   for(let i=0; i<balls.length; i++){
@@ -18,7 +18,7 @@ function draw() {
       balls[i].moveCircle();
       balls[i].checkBoundaries();
 
-      if(balls[i].getDx() > 80 || balls[i].getDy() > 80){
+      if(sqrt(sq(abs(balls[i].getDx())) + sq(abs(balls[i].getDy()))) > 100){
         system.removeBall(i)
         delete balls[i];
       }
@@ -27,5 +27,5 @@ function draw() {
 }
 
 function mousePressed(){
-  balls.push(new Ball(mouseX, mouseY, random(-5, 5), random(-5, 5)));
+  balls.push(new GBall(mouseX, mouseY, random(-5, 5), random(-5, 5)));
 }

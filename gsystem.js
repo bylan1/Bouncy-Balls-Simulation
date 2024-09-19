@@ -1,11 +1,13 @@
 class GSystem{
-  constructor(balls, gravity){
+  constructor(balls){
     this.balls = balls;
-    this.gravity = gravity;
+    this.gravity = 0;
     
   }
   
-  changeVelocity(){
+  changeVelocity(gravity){
+    this.gravity = gravity;
+    
     for(let i=0; i<this.balls.length; i++){
       if(typeof this.balls[i] != 'undefined'){
         let ballX = this.balls[i].getX();
