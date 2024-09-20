@@ -6,14 +6,10 @@ class CollisionEnv {
   
   collisionReaction(){
     if(this.compareDistance()){
-      if(this.ball1.getVelocity() > this.ball2.getVelocity()){
-        let ind = this.ball1.getColIndex();
-        this.ball2.setColIndex(ind);
-      } else if (this.ball2.getVelocity() > this.ball1.getVelocity()) {
-        let ind = this.ball2.getColIndex();
-        this.ball1.setColIndex(ind);
-      }
       this.vectorCalculation();
+      return true;
+    } else {
+      return false;
     }
   }
   
