@@ -22,12 +22,22 @@ class Ball {
   }
   
   checkBoundaries(){
-    if (this.x > width - this.rad || this.x < this.rad){
+    if (this.x >= width - this.rad || this.x <= this.rad){
       this.dx *= -1;
+      if (this.x >= width - this.rad){
+        this.x = width - this.rad;
+      } else {
+        this.x = this.rad;
+      }
     }
     
-    if (this.y > height - this.rad || this.y < this.rad){
+    if (this.y >= height - this.rad || this.y <= this.rad){
       this.dy *= -1;
+      if (this.y >= height - this.rad){
+        this.y = height - this.rad;
+      } else {
+        this.y = this.rad;
+      }
     }
   }
   

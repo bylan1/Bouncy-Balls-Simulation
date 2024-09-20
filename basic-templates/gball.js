@@ -1,9 +1,10 @@
 class GBall {
-  constructor(x,y, dx, dy){
+  constructor(x, y, dx, dy){
     this.x = x;
     this.y = y;
     this.dx = dx;
     this.dy = dy;
+    this.rad = 15;
     this.gravity = 1;
 
     // ^v comment out for each other
@@ -14,7 +15,7 @@ class GBall {
   
   drawCircle(){
     fill(0);
-    circle(this.x, this.y, 30);
+    circle(this.x, this.y, this.rad*2);
   }
   
   moveCircle(){
@@ -33,21 +34,21 @@ class GBall {
   }
   
   checkBoundaries(){
-    if (this.x >= width - 15 || this.x <= 15){
+    if (this.x >= width - this.rad || this.x <= this.rad){
       this.dx *= -1;
-      if (this.x >= width - 15){
-        this.x = width - 15;
+      if (this.x >= width - this.rad){
+        this.x = width - this.rad;
       } else {
-        this.x = 15;
+        this.x = this.rad;
       }
     }
     
-    if (this.y >= height - 15 || this.y <= 15){
+    if (this.y >= height - this.rad || this.y <= this.rad){
       this.dy *= -1;
-      if (this.y >= height - 15){
-        this.y = height - 15;
+      if (this.y >= height - this.rad){
+        this.y = height - this.rad;
       } else {
-        this.y = 15;
+        this.y = this.rad;
       }
     }
   }
