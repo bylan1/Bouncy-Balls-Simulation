@@ -14,19 +14,32 @@ function draw() {
     balls[i].drawCircle();
     balls[i].moveCircle();
     balls[i].checkBoundaries();
-    system = new GSystem(balls[i], balls);
-    
+    system = new GSystem(balls);
     
     if (balls.length > 1){
-      for (let j=i; j<balls.length; j++){
+      for (let j=i+1; j<balls.length; j++){
         environment = new CollisionEnv(balls[i], balls[j]);
-        system.changeVelocity(0.05, moving);
+        system.changeVelocity(0.1, moving);
+        
+        if(environment.highSpeedCollision() && balls[i].getColIndex() != balls[j].getColIndex()){
+          balls.push(merge(balls[i], balls[j]));
+          
+          movementDx.splice(j, 1);
+          movementDy.splice(j, 1);
+          system.removeBall(j);
+          
+          movementDx.splice(i, 1);
+          movementDy.splice(i, 1);
+          system.removeBall(i);
+          
+          continue;
+        }
         
         if(environment.collisionReaction()){
-          if(balls[i].getVelocity() > balls[j].getVelocity()){
+          if(balls[j].getVelocity() > balls[i].getVelocity()){
             let ind = balls[j].getColIndex();
             balls[i].setColIndex(ind);
-          } else if(balls[j].getVelocity() > balls[i].getVelocity()){
+          } else if(balls[i].getVelocity() > balls[j].getVelocity()){
             let ind = balls[i].getColIndex();
             balls[j].setColIndex(ind);
           }
@@ -34,6 +47,19 @@ function draw() {
       }
     }
   }
+}
+
+// for merging, change other classes to joins colours in future
+function merge(ball1, ball2){
+  let x = (ball1.getX() + ball2.getX())/2;
+  let y = (ball1.getY() + ball2.getY())/2;
+  let rad = ball1.getRad() + ball2.getRad();
+  // change this to momentum scaling comparison
+  let colIndex = (abs(ball1.getVelocity()) > abs(ball2.getVelocity())) ? ball1.getColIndex() : ball2.getColIndex();
+  let dx = ball1.getDx() + ball2.getDx();
+  let dy = ball1.getDy() + ball2.getDy();
+
+  return new Ball(x, y, rad, colIndex, dx, dy);
 }
 
 function spawnBall(colIndex){
@@ -78,7 +104,7 @@ function keyPressed() {
       }
       moving = false;
     } else if (moving === false) {
-      for(let i=0; i<movementDx.length; i++){
+      for(let i=0; i<balls.length; i++){
         if(movementDx[i] != 0 && movementDy[i] != 0){
           balls[i].setDx(movementDx[i]);
           balls[i].setDy(movementDy[i]);
